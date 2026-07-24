@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         });
         viewModel = new ViewModelProvider(this).get(CropViewModel.class);
         checkPermission();
+        binding.selectVideo.setOnClickListener(v -> selectVideo());
     }
 
     private void checkPermission() {

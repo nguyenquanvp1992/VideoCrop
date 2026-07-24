@@ -21,6 +21,7 @@ import androidx.media3.exoplayer.ExoPlayer;
 
 import com.easy.editvideo.CropState;
 import com.easy.editvideo.Media3PlaybackEngine;
+import com.easy.editvideo.ViewSize;
 import com.easy.editvideo.databinding.FragmentPlaybackBinding;
 
 @OptIn(markerClass = UnstableApi.class)
@@ -61,9 +62,6 @@ public class PlaybackFragment extends Fragment {
     private void handleResponse() {
         viewModel.cropState.observe(getViewLifecycleOwner(), cropAspectRatio -> binding.cropOverlay.setAspectRatio(cropAspectRatio));
         viewModel.cropInfoEditing.observe(getViewLifecycleOwner(), cropInfo -> binding.cropOverlay.setCropInfo(cropInfo));
-        viewModel.cropInfoCommit.observe(getViewLifecycleOwner(), cropInfo -> {
-            // TODO
-        });
         viewModel.processState.observe(getViewLifecycleOwner(), processState -> {
             if (processState == CropState.EDITING) {
                 binding.cropOverlay.setVisibility(View.VISIBLE);
@@ -77,15 +75,6 @@ public class PlaybackFragment extends Fragment {
         });
         viewModel.uriVideo.observe(getViewLifecycleOwner(), this::initMedia3);
         viewModel.cropSize.observe(getViewLifecycleOwner(), this::appyCropRatio);
-        viewModel.videoScale.observe(getViewLifecycleOwner(), videoScale -> {
-            binding.player.setScaleX(videoScale.getScale());
-            binding.player.setScaleY(videoScale.getScale());
-            binding.player.setTranslationX(videoScale.getTranslationX());
-            binding.player.setTranslationY(videoScale.getTranslationY());
-
-            binding.player.getPlayer().play();
-            new Handler(Looper.getMainLooper()).postDelayed(() -> binding.player.getPlayer().pause(), 100);
-        });
     }
 
     private void handleLayoutChange() {
@@ -105,11 +94,20 @@ public class PlaybackFragment extends Fragment {
 
     }
 
-    private void appyCropRatio(VideoSize size) {
+    private void appyCropRatio(ViewSize size) {
         ConstraintLayout.LayoutParams containerParams = (ConstraintLayout.LayoutParams) binding.layoutPlayer.getLayoutParams();
-        containerParams.dimensionRatio = size.width + ":" + size.height;
+        containerParams.dimensionRatio = size.getWidth() + ":" + size.getHeight();
         binding.layoutPlayer.setLayoutParams(containerParams);
-//        binding.player.getPlayer().play();
-//        new Handler(Looper.getMainLooper()).postDelayed(() -> binding.player.getPlayer().pause(), 100);
+
+        binding.player.setScaleX(size.getScaleX());
+        binding.player.setScaleY(size.getScaleY());
+        binding.player.setTranslationX(size.getTranslationX());
+        binding.player.setTranslationY(size.getTranslationY());
+
+        binding.player.getPlayer().play();
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            binding.player.getPlayer().pause();
+            binding.player.getPlayer().seekTo(binding.player.getPlayer().getCurrentPosition() - 100);
+        }, 100);
     }
 }
