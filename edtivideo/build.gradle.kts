@@ -1,22 +1,21 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.navigation)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt.android)
 }
 
 android {
-    namespace = "com.easy.editvideo"
+    namespace = "com.easy.edtivideo"
     compileSdk {
-        version = release(36) {
+        version = release(37) {
             minorApiLevel = 1
         }
     }
 
     defaultConfig {
-        applicationId = "com.easy.editvideo"
         minSdk = 24
-        targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        targetSdk = 37
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -28,36 +27,42 @@ android {
             }
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     buildFeatures {
-        dataBinding = true
-        buildConfig = true
         viewBinding = true
     }
 }
 
 dependencies {
-    implementation(project(":edtivideo"))
-    implementation(libs.activity.ktx)
+    // AndroidX Core
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.fragment.ktx)
     implementation(libs.appcompat)
-    implementation(libs.constraintlayout)
     implementation(libs.material)
-    implementation(libs.rxjava)
-    implementation(libs.rxandroid)
-    implementation(libs.rxbinding)
-    implementation(libs.navigation.ui)
-    implementation(libs.navigation.fragment)
-    implementation(libs.glide)
-    implementation(libs.gson)
-    implementation(libs.androidx.media3.ui)
-    implementation(libs.androidx.media3.exoplayer)
-    implementation(libs.smart.exception.java)
-    implementation(libs.androidx.media3.transformer)
-    implementation(libs.androidx.media3.effect)
+    implementation(libs.constraintlayout)
+
+    // Lifecycle
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+
+    // Coroutines
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
+
+    // Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+
+    // Media3 (for future video processing)
     implementation(libs.androidx.media3.common)
+    implementation(libs.androidx.media3.exoplayer)
+
+    // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(libs.ext.junit)

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    EditVideoFragment layout — Phase 1 skeleton.
+
+    Structure:
+    ┌─────────────────────────────────────────────────────┐
+    │  ConstraintLayout (root)                            │
+    │                                                     │
+    │    FrameLayout (layoutPreview)  ← video preview     │
+    │        [visible only when isReady]                  │
+    │                                                     │
+    │    ProgressBar (progressLoading)                    │
+    │        [visible only when isLoading]                │
+    │                                                     │
+    │    TextView (tvError)                               │
+    │        [visible only when hasError]                 │
+    │                                                     │
+    └─────────────────────────────────────────────────────┘
+
+    Phase 2+ additions:
+    - Add PlayerView inside layoutPreview for media playback.
+    - Add CropOverlayView on top of layoutPreview.
+    - Add bottom ToolBar / BottomSheet for editing controls.
+-->
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.editvideo.EditVideoFragment">
+
+    <!--
+        Preview container.
+        In Phase 2 this will hold PlayerView + any overlay views (crop, rotate handles, etc.).
+        Visibility is controlled by EditVideoFragment.render() based on UiState.isReady.
+    -->
+    <FrameLayout
+        android:id="@+id/layoutPreview"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
+    <!--
+        Loading indicator.
+        Shown while EditorSession is in EditorState.Loading.
+    -->
+    <ProgressBar
+        android:id="@+id/progressLoading"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--
+        Error message view.
+        Shown when EditorSession transitions to EditorState.Error.
+        Text content is set programmatically from EditVideoUiState.errorMessage.
+    -->
+    <TextView
+        android:id="@+id/tvError"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:gravity="center"
+        android:textAppearance="?attr/textAppearanceBodyMedium"
+        android:textColor="@android:color/holo_red_dark"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Error loading video"
+        tools:visibility="visible" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

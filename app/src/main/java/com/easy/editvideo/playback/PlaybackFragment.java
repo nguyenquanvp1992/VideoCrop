@@ -88,6 +88,7 @@ public class PlaybackFragment extends Fragment {
                 viewModel.setParentSize(width, height);
             }
         });
+        binding.player.setRotation(90f);
     }
 
     private void updateVideoViewPort(VideoSize videoSize) {

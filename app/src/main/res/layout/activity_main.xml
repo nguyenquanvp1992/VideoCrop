@@ -33,7 +33,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/playback"
-            android:name="com.easy.editvideo.playback.PlaybackFragment"
+            android:name="com.easy.edtivideo.ui.editvideo.EditVideoFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@id/cropTools"

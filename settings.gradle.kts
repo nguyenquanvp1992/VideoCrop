@@ -24,3 +24,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "EditVideo"
 include(":app")
+include(":edtivideo")
